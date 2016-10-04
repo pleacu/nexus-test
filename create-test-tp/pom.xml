@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>org.jboss.tools.integration-stack</groupId>
+   <artifactId>nexus-test</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <name>Nexus load-balancer test :: create</name>
+   <description>
+      Test the Sonatype/Nexus load balancer - create.
+   </description>
+   <packaging>pom</packaging>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <tychoVersion>0.26.0</tychoVersion>
+      <tychoExtrasVersion>${tychoVersion}</tychoExtrasVersion>
+      <jbossTychoPluginsVersion>0.26.0-SNAPSHOT</jbossTychoPluginsVersion>
+   </properties>
+
+   <distributionManagement>
+      <snapshotRepository>
+         <id>jboss-snapshots-repository</id>
+         <name>JBoss Snapshots Repository</name>
+         <url>https://origin-repository.jboss.org/nexus/content/repositories/snapshots/</url>
+      </snapshotRepository>
+   </distributionManagement>
+  
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-maven-plugin</artifactId>
+            <version>${tychoVersion}</version>
+            <extensions>true</extensions>
+         </plugin>
+         <plugin>
+            <groupId>org.jboss.tools.tycho-plugins</groupId>
+            <artifactId>target-platform-utils</artifactId>
+            <version>${jbossTychoPluginsVersion}</version>
+            <executions>
+               <execution>
+                  <id>merge-base</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>merge-targets</goal>
+                  </goals>
+                  <configuration>
+                     <sourceTargetFiles>
+                        <item>${basedir}/src/targets/core-base.target</item>
+                        <item>${basedir}/src/targets/core-add.target</item>
+                     </sourceTargetFiles>
+                     <outputFile>${project.build.directory}/aggregate-base.target</outputFile>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.3</version>
+            <executions>
+               <execution>
+                  <id>attach-artifacts-base</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>attach-artifact</goal>
+                  </goals>
+                  <configuration>
+                     <tasks>
+                        <echo>Packaging the aggregated base target dependencies.</echo>
+                     </tasks>
+                     <artifacts>
+                        <artifact>
+                           <file>${project.build.directory}/aggregate-base.target</file>
+                           <type>target</type>
+                           <classifier>base</classifier>
+                        </artifact>
+                     </artifacts>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>

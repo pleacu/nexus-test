@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+   <groupId>org.jboss.tools.integration-stack</groupId>
+   <artifactId>nexus-reference-test</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <name>Nexus load-balancer test :: reference</name>
+   <description>
+      Test the Sonatype/Nexus load balancer - reference.
+   </description>
+   <packaging>pom</packaging>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <tychoVersion>0.26.0</tychoVersion>
+      <jbossTychoPluginsVersion>0.26.0-SNAPSHOT</jbossTychoPluginsVersion>
+   </properties>
+
+   <distributionManagement>
+      <snapshotRepository>
+         <id>jboss-snapshots-repository</id>
+         <name>JBoss Snapshots Repository</name>
+         <url>https://repository.jboss.org/nexus/content/repositories/snapshots/</url>
+      </snapshotRepository>
+   </distributionManagement>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.jboss.tools.tycho-plugins</groupId>
+            <artifactId>target-platform-utils</artifactId>
+            <version>${jbossTychoPluginsVersion}</version>
+            <executions>
+               <execution>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>mirror-target-to-repo</goal>
+                  </goals>
+                  <configuration>
+                     <sourceTargetArtifact>
+                        <groupId>org.jboss.tools.integration-stack</groupId>
+                        <artifactId>nexus-test</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
+                        <classifier>base</classifier>
+                     </sourceTargetArtifact>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>
